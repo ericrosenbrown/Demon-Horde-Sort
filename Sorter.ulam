@@ -1,0 +1,116 @@
+/** brick layer.
+\symbol So
+\color #00f
+\symmetries normal
+*/
+
+element Sorter
+{
+  EventWindow ew;
+  Int threshold = 0;
+
+  Void behave()
+  {
+    EventWindow.SiteNum i = 0;
+    for (i = 0; i < 40; i++) 
+    {
+    if(ew[i] is Res) //Convert Res to Sorter
+      {
+        Sorter s;
+        ew[i] = s;
+      }
+    //Sort Data
+    if (ew[i] is Data)
+      {
+        Data d = (Data) ew[i];
+        if ((Int) d.value > threshold  && inNE(i) && emptyTileSW() != -1) //Data is less than threshold, it's in upper right corner, and bottom left corner is empty
+          {
+            //Move value down
+            Int etile = emptyTileSW();
+            ew.swap(i, (EventWindow.SiteNum) etile);
+            threshold = (Int) d.value;
+          }
+        if ((Int) d.value < threshold && inSE(i) && emptyTileNW() != -1) //Data is greater than threshold, it's bottom right corner, and upper left corner is empty
+          {
+            //Move upwards
+            Int etile = emptyTileNW();
+            ew.swap(i, (EventWindow.SiteNum) etile);
+            threshold = (Int) d.value;
+          }
+      }
+    }
+
+    //Diffuse
+    Random r;
+    i = (EventWindow.SiteNum) r.between(1,4);
+    if (ew[i] is Empty) 
+    {
+      ew.swap(0,i);
+    }
+  }
+
+  Bool inNE(Int i) 
+  {
+    if (i == 7 || i == 17 || i == 19 || i == 27)
+    {
+      return true;
+    }
+    return false;
+  }
+
+  Bool inSE(Int i) 
+  {
+    if (i == 18 || i == 8 || i == 20 || i == 28)
+    {
+      return true;
+    }
+    return false;
+  }
+
+  Int emptyTileNW() 
+  {
+    if (ew[5] is Empty)
+    {
+      return 5;
+    }
+    else if (ew[13] is Empty)
+    {
+      return 13;
+    }
+    else if (ew[15] is Empty)
+    {
+      return 15;
+    }
+    else if (ew[25] is Empty)
+    {
+      return 25;
+    }
+    else 
+    {
+      return -1;
+    }
+  }
+  Int emptyTileSW() 
+  {
+    if (ew[6] is Empty)
+    {
+      return 6;
+    }
+    else if (ew[14] is Empty)
+    {
+      return 14;
+    }
+    else if (ew[16] is Empty)
+    {
+      return 16;
+    }
+    else if (ew[26] is Empty)
+    {
+      return 26;
+    }
+    else 
+    {
+      return -1;
+    }
+  }
+}

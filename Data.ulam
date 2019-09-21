@@ -1,0 +1,20 @@
+/** brick layer.
+\symbol Da
+\color #0ff
+\symmetries all
+*/
+element Data
+{
+  Random r;
+  Int value = 10;
+
+  EventWindow ew;
+
+  Void behave()
+  {
+    if (ew[1] is Empty)
+    {
+      ew.swap(1,0);
+    }
+  }
+}

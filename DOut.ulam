@@ -1,0 +1,56 @@
+/** brick layer.
+\symbol DO
+\color #f0f
+\symmetries normal
+*/
+
+element DOut
+{
+  EventWindow ew;
+  Int vidx = 0;  
+  Int lastv = -1;
+
+  Void behave()
+  {
+    //Create DGen above and below if possible
+    if(ew[2] is Empty) //above empty
+    {
+      DOut dout;
+      ew[2] = dout;
+    }
+
+    if(ew[3] is Empty) //below empty
+    {
+      DOut dout;
+      ew[3] = dout;
+    }
+
+    if(ew[2] is DOut) //Above is a DOut
+    {
+      DOut dout = (DOut) ew[2];
+      vidx = (Int) dout.vidx + 1;
+    }
+
+    if(ew[1] is Empty) //Left is empty, make wall
+    {
+      Wall w;
+      ew[1] = w;
+    }
+
+    if(ew[4] is Data)
+    {
+      Data d = (Data) ew[4];
+      lastv = d.value;
+      log();
+      Empty e;
+      ew[4] = e;
+    }
+  }
+
+  Void log()
+  {
+    DebugUtils du;
+    du.print(self);
+  }
+
+}

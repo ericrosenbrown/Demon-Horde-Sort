@@ -1,0 +1,43 @@
+/** brick layer.
+\symbol DG
+\color #a4c
+\symmetries normal
+*/
+
+element DGen
+{
+
+  /**
+     Data generation. Odds of creating a data.
+     \unit odds
+     \range 1..200
+  */
+  parameter Unsigned pDATA_GENERATE=200;
+
+  EventWindow ew;
+  Random random;
+  Void behave()
+  {
+    //Create DGen above and below if possible
+    if(ew[10] is Empty)
+    {
+      DGen dgen;
+      ew[10] = dgen;
+    }
+
+    if(ew[11] is Empty)
+    {
+      DGen dgen;
+      ew[11] = dgen;
+    }
+
+    if(ew[1] is Empty && random.oneIn(pDATA_GENERATE))
+    {
+      Data d;
+      Random r;
+      Int val = r.between(1,100);
+      d.value = val;
+      ew[1] = d;
+    }
+  }
+}
